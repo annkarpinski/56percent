@@ -34,8 +34,11 @@ class SMS
         # Handling second response
         elsif FOLLOWUP_FEELINGS.include? body
             @answers.push(body)
-            create_response body
-            # create_response("When you feel #{@answers.get(0)}, you also feel #{@answers.get(1)}. Take on the day with these feelings!")
+            if (@answers.length >= 1)
+                create_response("Feel #{@answers[0]} and #{@answers[1]} throughout the day!")
+            else
+                create_response("Empower youself with these feelings throughout the day. You can do it.")
+            end
         else
             create_response("We're not sure how to reply, please follow up with a valid feeling.")
         end
