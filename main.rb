@@ -79,9 +79,9 @@ get '/send-message' do
     when 1
       response = create_response(create_second_text_message(body))
       txt_msg_counter += 1
-    else
-      create_response("We have no idea how to answer that, please try again.")
     end
+  else
+    create_response("We have no idea how to answer that, please try again.")
   end
   
   "#{txt_msg_counter}" 
