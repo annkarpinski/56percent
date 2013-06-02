@@ -6,8 +6,7 @@ describe SMS, "message" do
     end
 
     it 'should display inital feelings in the first text' do
-        feelings = SMS::INITIAL_FEELINGS & @sms.send_first_message.split(" ")
-        expect(feelings.length).to eq(SMS::INITIAL_FEELINGS.length)
+
     end
 
     it 'should send the second message if the reply is valid' do
