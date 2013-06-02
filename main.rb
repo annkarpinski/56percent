@@ -12,10 +12,9 @@ anns_phone = '+13038271604'
 
 txt_msg_counter = 1
 
-def validate_reply(reply, text_message_number)
-  return true if INITIAL_FEELINGS.include? reply && text_message_number == 1
-  return true if FOLLOWUP_FEELIGNS.include? reply && text_message_number == 2
-
+def validate_reply(reply)
+  return true if INITIAL_FEELINGS.include? reply
+  return true if FOLLOWUP_FEELIGNS.include? reply
   false
 end
 
@@ -68,17 +67,8 @@ get '/send-message' do
 
   sender = params[:From]
   body = params[:Body] || "No text"
-  response = ""
 
-  # if (validate_reply(body, txt_msg_counter))
-    # case txt_msg_counter
-    # when 1
-      response = create_response(create_second_text_message(body))
-      # txt_msg_counter += 1
-    # end
-  # else
-  #   create_response("We have no idea how to answer that, please try again.")
-  # end
-  
-  "#{txt_msg_counter}" 
+  if (validate_reply(body))
+    create_response(create_second_text_message(body))
+  end
 end
