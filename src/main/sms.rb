@@ -25,7 +25,7 @@ class SMS
     end
 
     def parse_response(body)
-        create_response("Hey, you said #{body}.")
+        create_response(body)
     end
 
     def validate_reply(reply)
