@@ -39,7 +39,7 @@ get '/send-message' do
   else
     body = params[:Body]
     @@sms.parse_response(body)
-    text = "two or more rounds, we're on fire!"
+    text = body
   end
 
   "#{text}"

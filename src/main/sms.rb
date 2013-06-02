@@ -15,7 +15,11 @@ class SMS
     end
 
     def send_first_message
-        create_response(@first_message)
+        @client.account.sms.messages.create(
+          :from => TWILIO_PHONE,
+          :to => omars_phone,
+          :body => @first_message
+        )
     end
 
     def parse_response(body)
