@@ -15,9 +15,11 @@ class SMS
     end
 
     def send_first_message
+        phone = '+17208787118'
+
         @client.account.sms.messages.create(
           :from => TWILIO_PHONE,
-          :to => omars_phone,
+          :to => phone,
           :body => @first_message
         )
     end
@@ -48,22 +50,22 @@ private
 
     # Had to alter first text due to message going over 160 character limit
     def create_first_text_message
-        %(Today, I want to feel:
-        Passionate
-        Energized
-        Connected
-        Hopeful
-        Aligned
-        )
+%(Today, I want to feel:
+Passionate
+Energized
+Connected
+Hopeful
+Aligned
+)
     end
 
     # Second text question which is under 160 characters
     def create_second_text_message(first_response)
-        %(When I feel #{first_response}, I will also feel:
-        Carefree
-        Peaceful 
-        Relieved
-        Mellow
-        Relaxed)
+%(When I feel #{first_response}, I will also feel:
+Carefree
+Peaceful 
+Relieved
+Mellow
+Relaxed)
     end
 end

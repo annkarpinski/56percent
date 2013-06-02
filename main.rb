@@ -6,7 +6,6 @@ require_relative 'src/main/sms'
 
 NAME = 'Ann'
 
-omars_phone = '+17208787118'
 anns_phone = '+13038271604'
 
 first_go = true
