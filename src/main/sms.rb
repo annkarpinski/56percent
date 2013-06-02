@@ -6,11 +6,11 @@ class SMS
     FOLLOWUP_FEELINGS = %w(Carefree Peaceful Relieved Mellow Relaxed)
 
     attr_reader :client, :first_message, :second_message
-
-    attr_writer :message_counter
+    attr_accessor :answers
 
     def initialize()
         @client = Twilio::REST::Client.new ACCOUNT_SID, AUTH_TOKEN
+        @answers = []
         create_messages
     end
 
@@ -24,14 +24,20 @@ class SMS
         )
     end
 
+    # This introduces a bug. It is possible to skip questions if the user
+    # answers with a valid feeling from another question.
     def parse_response(body)
-        create_response(body)
-    end
-
-    def validate_reply(reply)
-      return true if INITIAL_FEELINGS.include? reply
-      return true if FOLLOWUP_FEELINGS.include? reply
-      false
+        # Handling first response
+        if INITIAL_FEELINGS.include? body
+            @answers.push(body)
+            create_response(create_second_text_message(body))
+        # Handling second response
+        elsif FOLLOWUP_FEELINGS.include? body
+            @answers.push(body)
+            create_response("When you feel #{@answers.get(0)}, you also feel #{@answers.get(1)}. Take on the day with these feelings!")
+        else
+            create_response("We're not sure how to reply, please follow up with a valid feeling.")
+        end
     end
 
 private
@@ -45,7 +51,6 @@ private
 
     def create_messages
         @first_message = create_first_text_message
-        # @second_message = create_second_text_message("Mock it out!")
     end
 
     # Had to alter first text due to message going over 160 character limit
