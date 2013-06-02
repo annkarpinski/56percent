@@ -80,5 +80,5 @@ get '/send-message' do
   #   create_response("We have no idea how to answer that, please try again.")
   # end
   
-  "#{txt_msg_counter}" 
+  "#{response}" 
 end
