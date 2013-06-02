@@ -45,9 +45,10 @@ def create_response(body)
     twiml = Twilio::TwiML::Response.new do |r|
       r.sms body
     end
+
+    twiml.text
 end
 
-@sms_client = Twilio::REST::Client.new ACCOUNT_SID, AUTH_TOKEN
 
 get '/' do
     'Welcome to the prototype version of 56percent, where we empower women to become leaders.'
@@ -61,21 +62,27 @@ get '/send-message' do
 
   sender = params[:From]
   body = params[:Body] || "No text"
+  response = ""
+
+  if (txt_msg_counter == 0)
+    sms_client = Twilio::REST::Client.new ACCOUNT_SID, AUTH_TOKEN
+    sms_client.account.sms.messages.create(
+      :from => TWILIO_PHONE,
+      :to => omars_phone,
+      :body => create_first_text_message
+    )
+    txt_msg_counter += 1
+  end 
 
   if (validate_reply(body, txt_msg_counter))
     case txt_msg_counter
-    when 0
-      @sms_client.account.sms.messages.create(
-        :from => TWILIO_PHONE,
-        :to => omars_phone,
-        :body => create_first_text_message
-      )
-      txt_msg_counter += 1
     when 1
-      create_response(create_second_text_message(body))
+      response = create_response(create_second_text_message(body))
       txt_msg_counter += 1
     else
       create_response("We have no idea how to answer that, please try again.")
-    end 
+    end
   end
+  
+  "#{txt_msg_counter}" 
 end
