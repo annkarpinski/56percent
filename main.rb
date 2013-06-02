@@ -21,6 +21,7 @@ end
 
 # First question reponse handling here...
 def handle_first_text_response
+
 end
 
 # Second question...
@@ -29,6 +30,7 @@ end
 
 # Response to second question here...
 def handle_second_text_response
+
 end
 
 @sms_client = Twilio::REST::Client.new ACCOUNT_SID, AUTH_TOKEN
@@ -46,6 +48,7 @@ end
 
 get '/send-message' do
   sender = params[:From]
+  text = params[:Body]
 
   friends = {
     "+13038271604" => "Ann",
@@ -65,7 +68,6 @@ get '/send-message' do
       puts "Should not get here..."
     end
 
-    r.Sms "Hey, #{personal_name}, thanks for replying!"
+    r.Sms "Hey you said this: #{text}, thanks for replying!"
   end
-  sender
 end
