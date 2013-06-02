@@ -35,11 +35,11 @@ end
 
 @sms_client = Twilio::REST::Client.new ACCOUNT_SID, AUTH_TOKEN
 
-@sms_client.account.sms.messages.create(
-  :from => TWILIO_PHONE,
-  :to => omars_phone,
-  :body => create_first_text_message
-)
+# @sms_client.account.sms.messages.create(
+#   :from => TWILIO_PHONE,
+#   :to => omars_phone,
+#   :body => create_first_text_message
+# )
 
 get '/' do
     'Currently running version ' + Twilio::VERSION + \
@@ -55,19 +55,23 @@ get '/send-message' do
     "+17208787118" => "Omar"
   }
 
+  body = text || "No text"
+
   personal_name = friends[sender] || "Flower Power"
   twiml = Twilio::TwiML::Response.new do |r|
-    case txt_msg_counter
-    when 1
-      handle_first_text_response
-      txt_msg_counter += 1
-    when 2
-      handle_second_text_response
-      txt_msg_counter = 0
-    else
-      puts "Should not get here..."
-    end
+    # case txt_msg_counter
+    # when 1
+    #   handle_first_text_response
+    #   txt_msg_counter += 1
+    # when 2
+    #   handle_second_text_response
+    #   txt_msg_counter = 0
+    # else
+    #   puts "Should not get here..."
+    # end
 
-    r.Sms "Hey you said this: #{text}, thanks for replying!"
+    r.Sms "Hey you said this: #{body}, thanks for replying!"
   end
+
+  twiml.text
 end
