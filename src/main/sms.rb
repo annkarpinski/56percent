@@ -18,8 +18,8 @@ class SMS
         create_response(@first_message)
     end
 
-    def receive_message(body)
-
+    def parse_response(body)
+        create_response("Hey, you said #{body}.")
     end
 
     def validate_reply(reply)

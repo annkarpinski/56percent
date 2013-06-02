@@ -1,13 +1,16 @@
 require 'rubygems'
 require 'twilio-ruby'
 require 'sinatra'
-require_relative 'auth_info'
-require_relative 'sms'
+require_relative 'src/main/auth_info'
+require_relative 'src/main/sms'
 
 NAME = 'Ann'
 
 omars_phone = '+17208787118'
 anns_phone = '+13038271604'
+
+first_go = true
+text = ""
 
 # sms_client = Twilio::REST::Client.new ACCOUNT_SID, AUTH_TOKEN
 # sms_client.account.sms.messages.create(
@@ -16,9 +19,8 @@ anns_phone = '+13038271604'
 #   :body => create_first_text_message
 # )
 
-sms = SMS.new
-
-
+# THIS IS SUPERBAD... damn good movie
+@@sms = SMS.new
 
 get '/' do
     'Welcome to the prototype version of 56percent, where we empower women to become leaders.'
@@ -30,10 +32,15 @@ get '/send-message' do
     "+17208787118" => "Omar"
   }
 
-  sender = params[:From]
-  body = params[:Body] || "No text"
-
-  if (validate_reply(body))
-    create_response(create_second_text_message(body))
+  if first_go
+    @@sms.send_first_message
+    first_go = false
+    text = "have a first go"
+  else
+    body = params[:Body]
+    @@sms.parse_response(body)
+    text = "two or more rounds, we're on fire!"
   end
+
+  "#{text}"
 end
