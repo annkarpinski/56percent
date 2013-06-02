@@ -74,15 +74,15 @@ get '/send-message' do
     txt_msg_counter += 1
   end 
 
-  if (validate_reply(body, txt_msg_counter))
+  # if (validate_reply(body, txt_msg_counter))
     case txt_msg_counter
     when 1
       response = create_response(create_second_text_message(body))
       txt_msg_counter += 1
     end
-  else
-    create_response("We have no idea how to answer that, please try again.")
-  end
+  # else
+  #   create_response("We have no idea how to answer that, please try again.")
+  # end
   
   "#{txt_msg_counter}" 
 end
